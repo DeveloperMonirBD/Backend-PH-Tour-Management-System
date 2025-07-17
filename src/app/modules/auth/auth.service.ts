@@ -3,9 +3,7 @@ import { IUser } from "../user/user.interface"
 import { User } from "../user/user.model";
 import AppError from '../../errorHelpers/appError';
 import bcryptjs from "bcryptjs";
-import  Jwt  from 'jsonwebtoken';
-import { generateToken } from '../../utils/jwt';
-import { envVars } from '../../config/env';
+import { createNewAccessTokenWithRefreshToken, createUserTokens } from '../../utils/userToken';
 
 const credentialsLogin = async (payload: Partial<IUser>) => {
     const { email, password } = payload;
@@ -21,32 +19,39 @@ const credentialsLogin = async (payload: Partial<IUser>) => {
         throw new AppError(httpStatus.BAD_REQUEST, 'Incorrect password');
     }
 
-    const jwtPayload = {
-        userId: isUserExist._id,
-        email: isUserExist.email,
-        role: isUserExist.role
-    };
+    // const jwtPayload = {
+    //     userId: isUserExist._id,
+    //     email: isUserExist.email,
+    //     role: isUserExist.role
+    // };
+    // const accessToken = generateToken(jwtPayload, envVars.JWT_ACCESS_SECRET, envVars.JWT_ACCESS_EXPIRES)
+    // const refreshToken = generateToken(jwtPayload, envVars.JWT_REFRESH_SECRET, envVars.JWT_REFRESH_EXPIRES)
 
-    // const accessToken = Jwt.sign(jwtPayload, "secret", {
-    //     expiresIn: "1d"
-    // });
+    const userTokens = createUserTokens(isUserExist)
 
-    const accessToken = generateToken(jwtPayload, envVars.JWT_ACCESS_SECRET, envVars.JWT_ACCESS_EXPIRES)
+    // delete isUserExist.password;
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {password: pass, ...rest} = isUserExist.toObject()
 
     return {
-        accessToken
+        accessToken : userTokens.accessToken,
+        refreshToken : userTokens.refreshToken,
+        user: rest
     }
+}
 
-    // const { password, ...rest } = isUserExist;
+const getNewAccessToken= async (refreashToken: string) => {
+    const newAccessToken = await createNewAccessTokenWithRefreshToken(refreashToken);
 
-     return {
-         email: isUserExist.email
-        //  ...rest
-    }
+    return {
+        accessToken: newAccessToken
+    };
 }
 
 //user - login - token (email, role, _id) - booking / payment / booking / payment cancel -
 
 export const AuthServices = {
-    credentialsLogin
-}
+    credentialsLogin,
+    getNewAccessToken
+};
