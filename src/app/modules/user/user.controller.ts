@@ -1,28 +1,24 @@
 import { JwtPayload } from 'jsonwebtoken';
-import { verifyToken, verifyToken } from './../../utils/jwt';
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { NextFunction, Request, Response } from "express";
-import httpStatus from "http-status-codes"
-import { UserServices } from "./user.service";
-import { catchAsync } from "../../utils/catchAsync";
-import { sendResponse } from "../../utils/sendResponse";
-import { envVars } from '../../config/env';
+import { NextFunction, Request, Response } from 'express';
+import httpStatus from 'http-status-codes';
+import { catchAsync } from '../../utils/catchAsync';
+import { sendResponse } from '../../utils/sendResponse';
+import { UserServices } from './user.service';
 
 // const createUserFunction = async (req: Request, res: Response) => {
-    // const user = await UserServices.createUser(req.body);
-    // res.status(httpStatus.CREATED).json({
-    //     message: 'User Created Successfully',
-    //     user
-    // });
+// const user = await UserServices.createUser(req.body);
+// res.status(httpStatus.CREATED).json({
+//     message: 'User Created Successfully',
+//     user
+// });
 // }
 
-
- 
 // const createUser = async (req: Request, res: Response, next : NextFunction) => {
 //     try {
 //         // throw new Error ("Fake error")
 //         // throw new AppError(httpStatus.BAD_REQUEST, 'fake error')
-        
+
 //         createUserFunction(req, res)
 
 //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,14 +29,14 @@ import { envVars } from '../../config/env';
 // }
 
 // Create User
-const createUser = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
+const createUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const user = await UserServices.createUser(req.body);
 
     // res.status(httpStatus.CREATED).json({
     //     message: 'User Created Successfully',
     //     user
     // });
-    
+
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.CREATED,
@@ -57,14 +53,14 @@ const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunc
     const verifiedToken = req.user;
 
     const JwtPayload = req.body;
-    
-    const user = await UserServices.updateUser(userId, JwtPayload, verifiedToken);
+
+    const user = await UserServices.updateUser(userId, JwtPayload, verifiedToken as JwtPayload);
 
     // res.status(httpStatus.CREATED).json({
     //     message: 'User Created Successfully',
     //     user
     // });
-    
+
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.CREATED,
@@ -72,7 +68,6 @@ const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunc
         data: user
     });
 });
-
 
 // Get All Users
 const getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -87,16 +82,16 @@ const getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFun
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.CREATED,
-        message: "All Users Retrieved Successfully",
+        message: 'All Users Retrieved Successfully',
         data: result.data,
         meta: result.meta
-})
+    });
 });
 
-// function = try-catch => req-res function 
+// function = try-catch => req-res function
 
 export const UserControllers = {
     createUser,
     getAllUsers,
     updateUser
-}
+};
