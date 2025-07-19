@@ -1,29 +1,32 @@
-import { model, Schema } from "mongoose";
-import { IAuthProvider, IsActive, IUser, Role } from "./user.interface";
+import { model, Schema } from 'mongoose';
+import { IAuthProvider, IsActive, IUser, Role } from './user.interface';
 
-const authProviderSchema = new Schema<IAuthProvider>({
-    provider: {
-        type: String,
-        required: true
+const authProviderSchema = new Schema<IAuthProvider>(
+    {
+        provider: {
+            type: String,
+            required: true
+        },
+        providerId: {
+            type: String,
+            required: true
+        },
+        accessToken: String,
+        refreshToken: String,
+        expiresIn: Number,
+        scope: String,
+        tokenType: String,
+        idToken: String,
+        email: String,
+        emailVerified: Boolean,
+        phoneNumber: String
     },
-    providerId: {
-        type: String,
-        required: true
-    },
-    accessToken: String,
-    refreshToken: String,
-    expiresIn: Number,
-    scope: String,
-    tokenType: String,
-    idToken: String,
-    email: String,
-    emailVerified: Boolean,
-    phoneNumber: String
-}, {
-    versionKey: false,
-    _id: false,
-    timestamps: false,
-})
+    {
+        versionKey: false,
+        _id: false,
+        timestamps: false
+    }
+);
 
 const userSchema = new Schema<IUser>(
     {
@@ -40,6 +43,7 @@ const userSchema = new Schema<IUser>(
         password: {
             type: String
         },
+        age: Number,
         role: {
             type: String,
             enum: Object.values(Role),
@@ -57,7 +61,7 @@ const userSchema = new Schema<IUser>(
             type: String
         },
         isDeleted: {
-            type: String,
+            type: Boolean,
             default: false
         },
         isActive: {
@@ -77,4 +81,4 @@ const userSchema = new Schema<IUser>(
     }
 );
 
-export const User = model<IUser>("User", userSchema)
+export const User = model<IUser>('User', userSchema);
