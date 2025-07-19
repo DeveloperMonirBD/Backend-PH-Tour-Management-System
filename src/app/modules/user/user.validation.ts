@@ -1,13 +1,26 @@
-import z from "zod";
-import { IsActive, Role } from "./user.interface";
+import z from 'zod';
+import { IsActive, Role } from './user.interface';
 
 export const createUserZodSchema = z.object({
-    name: z.string({ invalid_type_error: 'Name must be string' }).min(2, { message: 'Name too short. Minimum 2 character long' }).max(50, { message: 'Name cannot exceed 50 characters.' }),
+    // name: z
+    // .string({ invalid_type_error: 'Name must be string' })
+    // .min(2, { message: 'Name too short. Minimum 2 character long' })
+    // .max(50, { message: 'Name cannot exceed 50 characters.' }),
+
+    name: z.object({
+        firstName: z.string({ invalid_type_error: 'Name must be string' }).min(2, { message: 'Name too short. Minimum 2 character long' }).max(50, { message: 'Name cannot exceed 50 characters.' }),
+        lastName: z.object({
+            nickName: z.string({ invalid_type_error: 'Name must be string' }).min(2, { message: 'Name too short. Minimum 2 character long' }).max(50, { message: 'Name cannot exceed 50 characters.' }),
+
+            surName: z.string({ invalid_type_error: 'Name must be string' }).min(2, { message: 'Name too short. Minimum 2 character long' }).max(50, { message: 'Name cannot exceed 50 characters.' })
+        })
+    }),
     email: z
         .string({ invalid_type_error: 'Email must be string' })
         .email({ message: 'Invalid email address format.' })
         .min(5, { message: 'Email must be at least 5 characters long.' })
         .max(100, { message: 'Email cannot exceed 100 character.' }),
+
     // 1 uppercase, 1 special character, 1 digit, 8 characters minimum length
     password: z
         .string({ invalid_type_error: 'Password must be string' })
@@ -53,20 +66,11 @@ export const updateUserZodSchema = z.object({
         })
         .optional(),
     role: z
-    // .enum(["ADMIN", "GUIDE", "USER", "SUPER_ADMIN"])
+        // .enum(["ADMIN", "GUIDE", "USER", "SUPER_ADMIN"])
         .enum(Object.values(Role) as [string])
         .optional(),
-    IsActive: z
-        .enum(Object.values(IsActive) as [string])
-        .optional(),
-    isDeleted: z
-        .boolean({ invalid_type_error: "isDeleted must be true or false" })
-        .optional(),
-    isVerified: z
-        .boolean({ invalid_type_error: "isVerified must be true or false" })
-        .optional(), 
-    address: z
-        .string({ invalid_type_error: 'Address must be string' })
-        .max(200, { message: 'Address cannot exceed 200 characters.' })
-        .optional()
+    IsActive: z.enum(Object.values(IsActive) as [string]).optional(),
+    isDeleted: z.boolean({ invalid_type_error: 'isDeleted must be true or false' }).optional(),
+    isVerified: z.boolean({ invalid_type_error: 'isVerified must be true or false' }).optional(),
+    address: z.string({ invalid_type_error: 'Address must be string' }).max(200, { message: 'Address cannot exceed 200 characters.' }).optional()
 });
