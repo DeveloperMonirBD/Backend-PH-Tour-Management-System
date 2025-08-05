@@ -7,8 +7,14 @@ import { envVars } from './env';
 
 // req.file -> cloudinary(req.file) -> mongoose -> mongodb
 
+ // Configuration
 cloudinary.config({
     cloud_name: envVars.CLOUDINARY.CLOUDINARY_CLOUD_NAME,
     api_key: envVars.CLOUDINARY.CLOUDINARY_API_KEY,
     api_secret: envVars.CLOUDINARY.CLOUDINARY_API_SECRET
 });
+
+
+export const cloudinaryUpload = cloudinary
+
+// const uploadToCloudinary = cloudinary.uploader()
