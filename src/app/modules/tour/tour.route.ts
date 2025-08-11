@@ -26,7 +26,12 @@ router.post(
     multerUpload.array("files"),
     validateRequest(createTourZodSchema), TourController.createTour);
 
-router.patch('/:id', checkAuth(Role.ADMIN, Role.SUPER_ADMIN), validateRequest(updateTourZodSchema), TourController.updateTour);
+router.patch(
+    '/:id',
+    checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
+    multerUpload.array("files"),
+    validateRequest(updateTourZodSchema),
+    TourController.updateTour);
 
 router.delete('/:id', checkAuth(Role.ADMIN, Role.SUPER_ADMIN), TourController.deleteTour);
 
