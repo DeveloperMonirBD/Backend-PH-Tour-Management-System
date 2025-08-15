@@ -24,6 +24,10 @@ export const checkAuth =
                 throw new AppError(httpStatus.BAD_REQUEST, 'Email does not exist');
             }
 
+            if (!isUserExist.isVerified) {
+                throw new AppError(httpStatus.BAD_REQUEST, 'User is not verified');
+            }
+
             if (isUserExist.isActive === IsActive.BLOCKED || isUserExist.isActive === IsActive.INACTIVE) {
                 throw new AppError(httpStatus.BAD_REQUEST, `user is ${isUserExist.isActive}`);
             }
