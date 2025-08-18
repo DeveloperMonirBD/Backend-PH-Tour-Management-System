@@ -32,9 +32,9 @@ export const checkAuth =
                 throw new AppError(httpStatus.BAD_REQUEST, `user is ${isUserExist.isActive}`);
             }
 
-            // if (isUserExist.isDeleted) {
-            //     throw new AppError(httpStatus.BAD_REQUEST, 'User is deleted');
-            // }
+            if (isUserExist.isDeleted) {
+                throw new AppError(httpStatus.BAD_REQUEST, 'User is deleted');
+            }
 
             if (!authRoles.includes(verifiedToken.role)) {
                 throw new AppError(403, 'You are not permitted to view this route');
