@@ -24,13 +24,17 @@ export const checkAuth =
                 throw new AppError(httpStatus.BAD_REQUEST, 'Email does not exist');
             }
 
+            if (!isUserExist.isVerified) {
+                throw new AppError(httpStatus.BAD_REQUEST, 'User is not verified');
+            }
+
             if (isUserExist.isActive === IsActive.BLOCKED || isUserExist.isActive === IsActive.INACTIVE) {
                 throw new AppError(httpStatus.BAD_REQUEST, `user is ${isUserExist.isActive}`);
             }
 
-            // if (isUserExist.isDeleted) {
-            //     throw new AppError(httpStatus.BAD_REQUEST, 'User is deleted');
-            // }
+            if (isUserExist.isDeleted) {
+                throw new AppError(httpStatus.BAD_REQUEST, 'User is deleted');
+            }
 
             if (!authRoles.includes(verifiedToken.role)) {
                 throw new AppError(403, 'You are not permitted to view this route');

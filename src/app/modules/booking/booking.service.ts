@@ -11,10 +11,9 @@ import { BOOKING_STATUS, IBooking } from './booking.interface';
 import { Booking } from './booking.model';
 import { SSLService } from '../sslCommerz/sslCommerz.service';
 import { ISSLCommerz } from '../sslCommerz/sslCommerz.interface';
+import { getTransactionId } from '../../utils/getTransactionId';
 
-const getTransactionId = () => {
-    return `tran_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
-};
+
 
 /**
  * Duplicate DB Collections / replica
@@ -195,9 +194,6 @@ const createBooking = async (payload: Partial<IBooking>, userId: string) => {
 
    
 }
-
-//============================================================================
-
 
 // Frontend(localhost:5173) - User - Tour - Booking (Pending) - Payment(Unpaid) -> SSLCommerz Page -> Payment Complete -> Backend(localhost:5000/api/v1/payment/success) -> Update Payment(PAID) & Booking(CONFIRM) -> redirect to frontend -> Frontend(localhost:5173/payment/success)
 
