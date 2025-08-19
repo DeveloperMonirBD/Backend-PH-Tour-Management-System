@@ -5,7 +5,6 @@ import path from 'path';
 import { envVars } from '../config/env';
 import AppError from '../errorHelpers/appError';
 
-
 const transporter = nodemailer.createTransport({
     // port: envVars.EMAIL_SENDER.SMTP_PORT,
     secure: true,
@@ -31,13 +30,22 @@ interface SendEmailOptions {
 
 export const sendEmail = async ({ to, subject, templateName, templateData, attachments }: SendEmailOptions) => {
     try {
+        //----------
+
+        if (!to || typeof to !== 'string' || to.trim() === '') {
+            throw new AppError(400, 'Recipient email address is required');
+        }
+
+        //----------
+
         const templatePath = path.join(__dirname, `templates/${templateName}.ejs`);
         const html = await ejs.renderFile(templatePath, templateData);
+
         const info = await transporter.sendMail({
             from: envVars.EMAIL_SENDER.SMTP_FROM,
-            to: to,
-            subject: subject,
-            html: html,
+            to,
+            subject,
+            html,
             attachments: attachments?.map(attachment => ({
                 filename: attachment.filename,
                 content: attachment.content,
