@@ -16,6 +16,8 @@ cloudinary.config({
     api_secret: envVars.CLOUDINARY.CLOUDINARY_API_SECRET
 });
 
+export const uploadBufferToCloudinary
+
 export const deleteImageFromCloudinary = async (url: string) => {
 
     try {
