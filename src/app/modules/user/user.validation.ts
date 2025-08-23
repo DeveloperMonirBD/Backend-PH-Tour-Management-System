@@ -2,10 +2,7 @@ import z from 'zod';
 import { IsActive, Role } from './user.interface';
 
 export const createUserZodSchema = z.object({
-    name: z
-    .string({ invalid_type_error: 'Name must be string' })
-    .min(2, { message: 'Name too short. Minimum 2 character long' })
-    .max(50, { message: 'Name cannot exceed 50 characters.' }),
+    name: z.string({ invalid_type_error: 'Name must be string' }).min(2, { message: 'Name too short. Minimum 2 character long' }).max(50, { message: 'Name cannot exceed 50 characters.' }),
 
     // name: z.object({
     //     firstName: z.string({ invalid_type_error: 'Name must be string' }).min(2, { message: 'Name too short. Minimum 2 character long' }).max(50, { message: 'Name cannot exceed 50 characters.' }),
@@ -45,20 +42,20 @@ export const createUserZodSchema = z.object({
 
 export const updateUserZodSchema = z.object({
     name: z.string({ invalid_type_error: 'Name must be string' }).min(2, { message: 'Name too short. Minimum 2 character long' }).max(50, { message: 'Name cannot exceed 50 characters.' }).optional(),
-    // 1 uppercase, 1 special character, 1 digit, 8 characters minimum length
-    password: z
-        .string({ invalid_type_error: 'Password must be string' })
-        .min(8, { message: 'Password must be at least 8 characters long.' })
-        .regex(/^(?=.*[A-Z])/, {
-            message: 'Password must contain at least 1 uppercase letter.'
-        })
-        .regex(/^(?=.*[!@#$%^&*])/, {
-            message: 'Password must contain at least 1 special character'
-        })
-        .regex(/^(?=.*\d)/, {
-            message: 'Password must contain at least 1 number.'
-        })
-        .optional(),
+    // // 1 uppercase, 1 special character, 1 digit, 8 characters minimum length
+    // password: z
+    //     .string({ invalid_type_error: 'Password must be string' })
+    //     .min(8, { message: 'Password must be at least 8 characters long.' })
+    //     .regex(/^(?=.*[A-Z])/, {
+    //         message: 'Password must contain at least 1 uppercase letter.'
+    //     })
+    //     .regex(/^(?=.*[!@#$%^&*])/, {
+    //         message: 'Password must contain at least 1 special character'
+    //     })
+    //     .regex(/^(?=.*\d)/, {
+    //         message: 'Password must contain at least 1 number.'
+    //     })
+    //     .optional(),
     phone: z
         .string({ invalid_type_error: 'Phone Number must be string' })
         .regex(/^(?:\+8801\d{9}|01\d{9})$/, {
