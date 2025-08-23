@@ -10,6 +10,7 @@ const now = new Date();
 const sevenDaysAgo = new Date(now).setDate(now.getDate() - 7);
 const thirtyDaysAgo = new Date(now).setDate(now.getDate() - 30);
 
+// Get User Stats
 const getUserStats = async () => {
     const totalUsersPromise = User.countDocuments();
 
@@ -55,6 +56,7 @@ const getUserStats = async () => {
     };
 };
 
+// Get Tour Stats
 const getTourStats = async () => {
     const totalTourPromise = Tour.countDocuments();
 
@@ -68,8 +70,8 @@ const getTourStats = async () => {
                 as: 'type'
             }
         },
-        //stage - 2 : unwind the array to object
 
+        //stage - 2 : unwind the array to object
         {
             $unwind: '$type'
         },
@@ -103,8 +105,8 @@ const getTourStats = async () => {
                 as: 'division'
             }
         },
-        //stage - 2 : unwind the array to object
 
+        //stage - 2 : unwind the array to object
         {
             $unwind: '$division'
         },
@@ -128,7 +130,6 @@ const getTourStats = async () => {
         },
 
         //stage-2 : sort the tour
-
         {
             $sort: { bookingCount: -1 }
         },
@@ -153,11 +154,11 @@ const getTourStats = async () => {
                 as: 'tour'
             }
         },
+
         //stage-5 unwind stage
         { $unwind: '$tour' },
 
         //stage-6 Project stage
-
         {
             $project: {
                 bookingCount: 1,
@@ -184,6 +185,7 @@ const getTourStats = async () => {
     };
 };
 
+// Get Booking Stats
 const getBookingStats = async () => {
     const totalBookingPromise = Booking.countDocuments();
 
@@ -277,6 +279,7 @@ const getBookingStats = async () => {
     return { totalBooking, totalBookingByStatus, bookingsPerTour, avgGuestCountPerBooking: avgGuestCountPerBooking[0].avgGuestCount, bookingsLast7Days, bookingsLast30Days, totalBookingByUniqueUsers };
 };
 
+// Get Payment Stats
 const getPaymentStats = async () => {
     const totalPaymentPromise = Payment.countDocuments();
 
